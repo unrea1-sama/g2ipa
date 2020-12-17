@@ -22,8 +22,6 @@ class PhoneticDictionary:
         if phonetic is None:
             phonetic = self._query_online(word)
             if phonetic is not None:
-                print(
-                    'could not find phonetic in offline database for word: {}'.format(word))
                 self._store(word, phonetic)
             else:
                 print('could not found phonetic for word: {}'.format(word))
