@@ -1,21 +1,22 @@
 import sqlite3
 import urllib.request
 import re
+import time
 
-
-online_dictionary_url = 'https://www.oxfordlearnersdictionaries.com/definition/english/learn?q='
+online_dictionary_url = 'http://www.iciba.com/word?w='
 db_name = 'phonetics.db'
 
 user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0'
 
 
 class PhoneticDictionary:
-    def __init__(self):
+    def __init__(self,online_query_sleeptime=50):
         self._init_complete = False
         self._db_conn = sqlite3.connect(db_name, isolation_level=None)
         self._db_cursor = self._db_conn.cursor()
         self._create_table()
         self._init_complete = True
+        self.online_query_sleeptime = online_query_sleeptime / 1000.0
 
     def query(self, word):
         phonetic = self._query_db(word)
@@ -38,12 +39,15 @@ class PhoneticDictionary:
             return None
 
     def _query_online(self, word):
+        time.sleep(self.online_query_sleeptime)
         req = urllib.request.Request(
             online_dictionary_url+word, headers={'User-Agent': user_agent})
+        print(req.get_full_url())
         with urllib.request.urlopen(req) as f:
             pattern1 = re.compile(
-                r'<div class="phons_br".*<span class="phon">/(.*?)/<')
+                r'<li>英<!-- -->\[(.*?)\].*?</li>')
             data = f.read().decode('utf-8')
+            match = pattern1.search(data)
             if match is None:
                 return None
             else:
@@ -70,4 +74,4 @@ class PhoneticDictionary:
 
 if __name__ == '__main__':
     pd = PhoneticDictionary()
-    print(pd.query('learn'))
+    print(pd._query_online('words'))
