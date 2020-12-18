@@ -96,7 +96,7 @@ class PhoneticDictionary:
             self.query(word)
 
     def __del__(self):
-        self._query_db.close()
+        self._db_conn.close()
 
 
 if __name__ == '__main__':
