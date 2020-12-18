@@ -20,15 +20,21 @@ class PhoneticDictionary:
         self._db_cursor = self._db_conn.cursor()
         self._create_table()
         self._init_complete = True
+        # cache not existed query to save time
+        self._not_exist_query = {}
 
     def query(self, word):
         word = word.lower()
+        # if the word's phonetic can't be found in offline source and online source
+        if word in self._not_exist_query.keys():
+            return None
         phonetic = self._query_db(word)
         if phonetic is None:
             phonetic = self._query_online(word)
             if phonetic is not None:
                 self._store(word, phonetic)
             else:
+                self._not_exist_query[word] = 1
                 print('could not found phonetic for word: {}'.format(word))
         return phonetic
 
