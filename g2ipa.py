@@ -13,7 +13,7 @@ print('load offline database {}'.format(db_name))
 user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0'
 
 
-class PhoneticDictionary:
+class G2IPA:
     def __init__(self):
         self._init_complete = False
         self._db_conn = sqlite3.connect(db_name, isolation_level=None)
@@ -106,5 +106,5 @@ class PhoneticDictionary:
 
 
 if __name__ == '__main__':
-    pd = PhoneticDictionary()
-    print(pd.query('commissioners'))
+    g = G2IPA()
+    print(g.query('commissioners'))

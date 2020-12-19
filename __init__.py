@@ -1,1 +1,1 @@
-from .phonetic_dictionary import PhoneticDictionary
+from .g2ipa import G2IPA

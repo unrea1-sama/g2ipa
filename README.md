@@ -1,11 +1,8 @@
 useage:
 
-git clone https://github.com/unrea1-sama/PhoneticDictionary.git
-
-
 ```python
-from PhoneticDictionary import PhoneticDictionary
-pd = PhoneticDictionary()
+from g2ipa import G2IPA
+g = G2IPA()
 # can only query one word at a time
-pd.query('learn')
+g.query('learn')
 ```
